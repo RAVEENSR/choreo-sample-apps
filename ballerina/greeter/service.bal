@@ -28,7 +28,7 @@ service / on new http:Listener(9090) {
     resource function get greeting(
         @http:Header string apiKey
     ) returns json|error {
-        http:Client greetingClient = check new ("https://f2ef303b-f962-4e56-adf7-23a0f5452229-dev-internal.e1-eu-north-azure.internal.preview-dv.choreoapis.dev");
+        http:Client greetingClient = check new ("https://f2ef303b-f962-4e56-adf7-23a0f5452229-dev-internal.e1-eu-north-azure.internal.preview-dv.choreoapis.dev", {httpVersion: http:HTTP_1_1});
 
         map<string> additionalHeaders = {
             "API-Key" : apiKey
