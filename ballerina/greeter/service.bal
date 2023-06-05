@@ -16,6 +16,7 @@
 //
 
 import ballerina/http;
+import ballerina/io;
 
 # A service representing a network-accessible API
 # bound to port `9090`.
@@ -24,11 +25,20 @@ service / on new http:Listener(9090) {
     # A resource for generating greetings
     # + name - the input string name
     # + return - string name with hello message or error
-    resource function get greeting(string name) returns string|error {
-        // Send a response back to the caller.
-        if name is "" {
-            return error("name should not be empty!");
+    resource function get greeting(string name) returns json|error {
+        http:Client greetingClient = check new ("http://greetingsserviceinternal-438700967:8090", 
+        {
+            secureSocket: { 
+                enable: false
+            }
+        });
+
+        json|error response = greetingClient->get(string `?name=${name}`);
+        if response is error {
+            io:println("GET request error:" + response.detail().toString());
+        } else {
+            io:println("GET request:" + response.toJsonString());
         }
-        return "Hello, " + name;
+        return response;
     }
 }
