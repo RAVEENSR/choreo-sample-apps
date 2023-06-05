@@ -26,17 +26,14 @@ service / on new http:Listener(9090) {
     # + name - the input string name
     # + return - string name with hello message or error
     resource function get greeting(
-        string name,
-        @http:Header string apiKey,
-        @http:Header string internalHost,
-        @http:Header string path
+        @http:Header string apiKey
     ) returns json|error {
-        http:Client greetingClient = check new (string `https://${internalHost}`);
+        http:Client greetingClient = check new ("https://f2ef303b-f962-4e56-adf7-23a0f5452229-dev-internal.e1-eu-north-azure.internal.preview-dv.choreoapis.dev");
 
         map<string> additionalHeaders = {
             "API-Key" : apiKey
         };
-        json|error response = greetingClient->get(path, additionalHeaders);
+        json|error response = greetingClient->get("/yupl/proxytest/1.0.0", additionalHeaders);
         if response is error {
             io:println("GET request error:" + response.detail().toString());
         } else {
