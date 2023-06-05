@@ -25,20 +25,24 @@ service / on new http:Listener(9090) {
     # A resource for generating greetings
     # + name - the input string name
     # + return - string name with hello message or error
-    resource function get greeting(string name) returns json|error {
-        http:Client greetingClient = check new ("http://greetingsserviceinternal-438700967:8090", 
-        {
-            secureSocket: { 
-                enable: false
-            }
-        });
+    resource function get greeting(
+        string name,
+        @http:Header string apiKey,
+        @http:Header string internalHost,
+        @http:Header string path
+    ) returns json|error {
+        http:Client greetingClient = check new (string `https://${internalHost}`);
 
-        json|error response = greetingClient->get(string `?name=${name}`);
+        map<string> additionalHeaders = {
+            "API-Key" : apiKey
+        };
+        json|error response = greetingClient->get(path, additionalHeaders);
         if response is error {
             io:println("GET request error:" + response.detail().toString());
         } else {
             io:println("GET request:" + response.toJsonString());
         }
+
         return response;
     }
 }
