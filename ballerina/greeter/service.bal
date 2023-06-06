@@ -23,17 +23,16 @@ import ballerina/io;
 service / on new http:Listener(9090) {
 
     # A resource for generating greetings
-    # + name - the input string name
     # + return - string name with hello message or error
     resource function get greeting(
         @http:Header string apiKey
     ) returns json|error {
-        http:Client greetingClient = check new ("https://f2ef303b-f962-4e56-adf7-23a0f5452229-dev-internal.e1-eu-north-azure.internal.preview-dv.choreoapis.dev", {httpVersion: http:HTTP_1_1});
+        http:Client greetingClient = check new ("https://f2ef303b-f962-4e56-adf7-23a0f5452229-dev-internal.e1-us-east-azure.internal.preview-dv.choreoapis.dev", {httpVersion: http:HTTP_1_1});
 
         map<string> additionalHeaders = {
             "API-Key" : apiKey
         };
-        json|error response = greetingClient->get("/yupl/proxytest/1.0.0", additionalHeaders);
+        json|error response = greetingClient->get("/bzuz/intp/1.0.0", additionalHeaders);
         if response is error {
             io:println("GET request error:" + response.detail().toString());
         } else {
