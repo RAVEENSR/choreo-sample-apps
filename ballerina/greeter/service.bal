@@ -26,7 +26,7 @@ service / on new http:Listener(9090) {
     # + name - the input string name
     # + return - string name with hello message or error
     resource function get greeting(string name) returns json|error {
-        http:Client greetingClient = check new ("http://greetingsserviceinternal-438700967:8090", 
+        http:Client greetingClient = check new ("http://greetings-service-project-api-3156171224:9090", 
         {
             secureSocket: { 
                 enable: false
