@@ -26,14 +26,14 @@ service / on new http:Listener(9090) {
     # + name - the input string name
     # + return - string name with hello message or error
     resource function get greeting(string name) returns json|error {
-        http:Client greetingClient = check new ("http://greetings-service-project-api-3156171224:9090", 
+        http:Client greetingClient = check new ("http://greetings-service-project-api-2712783793:8090/", 
         {
             secureSocket: { 
                 enable: false
             }
         });
 
-        json|error response = greetingClient->get(string `/greeting?name=${name}`);
+        json|error response = greetingClient->get(string `/?name=${name}`);
         if response is error {
             io:println("GET request error:" + response.detail().toString());
         } else {
