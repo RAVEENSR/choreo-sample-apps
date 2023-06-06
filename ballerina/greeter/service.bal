@@ -33,7 +33,7 @@ service / on new http:Listener(9090) {
             }
         });
 
-        json|error response = greetingClient->get(string `?name=${name}`);
+        json|error response = greetingClient->get(string `/greeting?name=${name}`);
         if response is error {
             io:println("GET request error:" + response.detail().toString());
         } else {
