@@ -25,13 +25,13 @@ service / on new http:Listener(9090) {
     # A resource for generating greetings
     # + apiKey - the api key
     # + return - string name with hello message or error
-    resource function get greeting(@http:Header string apiKey) returns json|error {
-        http:Client greetingClient = check new ("https://14718cfd-8ca9-4c95-a7ac-3faa1025c899-dev-internal.e1-eu-north-azure.internal.st.choreoapis.dev", {httpVersion: http:HTTP_1_1});
+    resource function get .(@http:Header string apiKey, @http:Header string host, @http:Header string path) returns json|error {
+        http:Client greetingClient = check new (host, {httpVersion: http:HTTP_1_1});
 
         map<string> additionalHeaders = {
             "API-Key" : apiKey
         };
-        json|error response = greetingClient->get("/teln/inp/1.0.0", additionalHeaders);
+        json|error response = greetingClient->get(path, additionalHeaders);
         if response is error {
             io:println("GET request error:" + response.detail().toString());
         } else {
